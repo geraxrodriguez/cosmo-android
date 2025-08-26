@@ -13,10 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.cosmo.ui.theme.CosmoTheme
 
+import java.net.URL
+import kotlinx.coroutines.*
+import com.example.cosmo.model.AsteroidRepository
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        testRepository()
         setContent {
             CosmoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -25,6 +30,21 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
+            }
+        }
+    }
+
+    private fun testRepository() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val repository = AsteroidRepository()
+                val asteroids = repository.getAsteroids("2024-01-01")
+                println("Found ${asteroids.size} asteroids:")
+                asteroids.forEach { asteroid ->
+                    println("- ${asteroid.name}: ${asteroid.diameter}ft, ${asteroid.velocity}mph, ${asteroid.missDistance}mi, Hazardous: ${asteroid.isHazardous}")
+                }
+            } catch (e: Exception) {
+                println("Repository Error: ${e.message}")
             }
         }
     }
