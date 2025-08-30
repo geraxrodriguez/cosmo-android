@@ -1,6 +1,6 @@
 package com.example.cosmo.model
 
-data class Asteroid(
+data class Asteroid (
     val name: String,
     val diameter: Int,
     val velocity: Int,
