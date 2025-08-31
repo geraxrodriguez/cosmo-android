@@ -15,8 +15,15 @@ import com.example.cosmo.ui.theme.CosmoTheme
 import kotlinx.coroutines.*
 import com.example.cosmo.model.AsteroidRepository
 import com.example.cosmo.model.AsteroidRepositoryImpl
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var repository: AsteroidRepository // Hilt provides this
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -36,7 +43,6 @@ class MainActivity : ComponentActivity() {
     private fun testRepository() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val repository: AsteroidRepository = AsteroidRepositoryImpl()
                 val asteroids = repository.fetchAsteroids("2024-01-01")
                 println("Found ${asteroids.size} asteroids:")
                 asteroids.forEach { asteroid ->
