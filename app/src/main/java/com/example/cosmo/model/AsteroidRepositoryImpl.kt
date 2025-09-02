@@ -1,15 +1,19 @@
 package com.example.cosmo.model
 
-import java.net.URL
+import com.example.cosmo.network.NasaApiService
 import org.json.JSONObject
 
-class AsteroidRepositoryImpl : AsteroidRepository {
+class AsteroidRepositoryImpl(
+    private val apiService: NasaApiService
+) : AsteroidRepository {
+
+
     override suspend fun fetchAsteroids(date: String): List<Asteroid> {
-        val url = URL("https://api.nasa.gov/neo/rest/v1/feed?start_date=$date&end_date=$date&api_key=lTHPxbpwqnn3thI5aiCieLtOpT1MZ85pxbkRI9tN")
-        val response = url.readText()
+        val response = apiService.getAsteroids(date, date,"lTHPxbpwqnn3thI5aiCieLtOpT1MZ85pxbkRI9tN")
+        val jsonString = response.string()
 
         // Parse JSON response
-        val jsonObject = JSONObject(response)
+        val jsonObject = JSONObject(jsonString)
         val nearEarthObjects = jsonObject.getJSONObject("near_earth_objects")
         val asteroidsArray = nearEarthObjects.getJSONArray(date)
 

@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.cosmo.ui.theme.CosmoTheme
 import kotlinx.coroutines.*
 import com.example.cosmo.model.AsteroidRepository
-import com.example.cosmo.model.AsteroidRepositoryImpl
+import android.util.Log
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
                 val asteroids = repository.fetchAsteroids("2024-01-01")
                 println("Found ${asteroids.size} asteroids:")
                 asteroids.forEach { asteroid ->
-                    println("- ${asteroid.name}: ${asteroid.diameter}ft, ${asteroid.velocity}mph, ${asteroid.missDistance}mi, Hazardous: ${asteroid.isHazardous}")
+                    Log.d("_","- ${asteroid.name}: ${asteroid.diameter}ft, ${asteroid.velocity}mph, ${asteroid.missDistance}mi, Hazardous: ${asteroid.isHazardous}")
                 }
             } catch (e: Exception) {
                 println("Repository Error: ${e.message}")

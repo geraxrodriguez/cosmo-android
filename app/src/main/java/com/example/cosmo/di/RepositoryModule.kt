@@ -1,7 +1,10 @@
+// Provides Repositories that depend on network services
+// Keeps data access logic separate from networking and UI
 package com.example.cosmo.di
 
 import com.example.cosmo.model.AsteroidRepository
 import com.example.cosmo.model.AsteroidRepositoryImpl
+import com.example.cosmo.network.NasaApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +16,7 @@ import javax.inject.Singleton
 object RepositoryModule {
     @Provides
     @Singleton
-    fun providesAsteroidRepository(): AsteroidRepository {
-        return AsteroidRepositoryImpl()
+    fun providesAsteroidRepository(apiService: NasaApiService): AsteroidRepository {
+        return AsteroidRepositoryImpl(apiService)
     }
 }

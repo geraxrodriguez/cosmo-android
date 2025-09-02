@@ -11,7 +11,7 @@ composeBom = "2024.09.00"
 hilt = "2.56.2"
 ksp = "2.0.21-1.0.27"
 room = "2.6.1"
-retrofit = "2.9.0"
+retrofit = "2.9.0" # Retrofit
 kotlinxSerialization = "1.6.0"
 
 [libraries]
