@@ -15,7 +15,10 @@ import com.example.cosmo.ui.theme.CosmoTheme
 import kotlinx.coroutines.*
 import com.example.cosmo.model.AsteroidRepository
 import android.util.Log
+import androidx.lifecycle.ViewModelProvider
+import com.example.cosmo.viewmodel.AsteroidViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -27,7 +30,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        testRepository()
+
+        val viewModel = ViewModelProvider(this)[AsteroidViewModel::class.java]
+        // Launch a coroutine to call fetchAsteroids
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.fetchAsteroids("2024-01-01")
+        }
+
         setContent {
             CosmoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -36,20 +45,6 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
-            }
-        }
-    }
-
-    private fun testRepository() {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val asteroids = repository.fetchAsteroids("2024-01-01")
-                println("Found ${asteroids.size} asteroids:")
-                asteroids.forEach { asteroid ->
-                    Log.d("_","- ${asteroid.name}: ${asteroid.diameter}ft, ${asteroid.velocity}mph, ${asteroid.missDistance}mi, Hazardous: ${asteroid.isHazardous}")
-                }
-            } catch (e: Exception) {
-                println("Repository Error: ${e.message}")
             }
         }
     }
