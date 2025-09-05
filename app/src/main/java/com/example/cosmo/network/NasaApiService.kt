@@ -2,6 +2,7 @@ package com.example.cosmo.network
 
 import retrofit2.http.GET
 import retrofit2.http.Query
+import com.example.cosmo.model.AsteroidResponse
 import okhttp3.ResponseBody
 
 interface NasaApiService {
@@ -10,5 +11,5 @@ interface NasaApiService {
         @Query("start_date") startDate: String,
         @Query("end_date") endDate: String,
         @Query("api_key") apiKey: String
-    ): ResponseBody
+    ): ResponseBody // Retrofit to decode directly into our DTO (AsteroidResponse)
 }
